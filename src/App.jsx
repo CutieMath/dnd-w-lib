@@ -14,6 +14,22 @@ const columnsData = {
   },
 };
 
+const onDragEnd = (result, columns, setColumns) => {
+  if (!result.destination) return;
+  const { source, destination } = result;
+  const column = columns[source.droppableId];
+  const copiedItems = [...column.items];
+  const [removed] = copiedItems.splice(source.index, 1);
+  copiedItems.splice(destination.index, 0, removed);
+  setColumns({
+    ...columns,
+    [source.droppableId]: {
+      ...column,
+      items: copiedItems,
+    },
+  });
+};
+
 function App() {
   const [columns, setColumns] = useState(columnsData);
   return (
@@ -24,19 +40,19 @@ function App() {
         height: "100%",
       }}
     >
-      <DragDropContext onDragEnd={(result) => console.log(result)}>
+      <DragDropContext
+        onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+      >
         {Object.entries(columns).map(([id, column]) => {
           return (
-            <Droppable key={id} droppableId={id}>
+            <Droppable droppableId={id} key={id}>
               {(provided, snapshot) => {
                 return (
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                     style={{
-                      background: snapshot.isDraggingOver
-                        ? "lightpink"
-                        : "#E0BBE4",
+                      background: "#E0BBE4",
                       padding: 4,
                       width: 250,
                       minHeight: 500,
@@ -75,6 +91,7 @@ function App() {
                         </Draggable>
                       );
                     })}
+                    {provided.placeholder}
                   </div>
                 );
               }}
