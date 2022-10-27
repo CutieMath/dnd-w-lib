@@ -12,6 +12,10 @@ const columnsData = {
     name: "Group 1",
     items: itemsData,
   },
+  [uuidv4()]: {
+    name: "Group 2",
+    items: [],
+  },
 };
 
 const onDragEnd = (result, columns, setColumns) => {
@@ -45,57 +49,71 @@ function App() {
       >
         {Object.entries(columns).map(([id, column]) => {
           return (
-            <Droppable droppableId={id} key={id}>
-              {(provided, snapshot) => {
-                return (
-                  <div
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    style={{
-                      background: "#E0BBE4",
-                      padding: 4,
-                      width: 250,
-                      minHeight: 500,
-                    }}
-                  >
-                    {column.items.map((item, index) => {
-                      return (
-                        <Draggable
-                          key={item.id}
-                          draggableId={item.id}
-                          index={index}
-                        >
-                          {(provided, snapshot) => {
-                            return (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                style={{
-                                  borderRadius: "10px",
-                                  userSelect: "none",
-                                  padding: 16,
-                                  margin: "8px",
-                                  minHeight: "50px",
-                                  backgroundColor: snapshot.isDragging
-                                    ? "#957DAD"
-                                    : "#D291BC",
-                                  color: "white",
-                                  ...provided.draggableProps.style,
-                                }}
-                              >
-                                {item.content}
-                              </div>
-                            );
-                          }}
-                        </Draggable>
-                      );
-                    })}
-                    {provided.placeholder}
-                  </div>
-                );
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
               }}
-            </Droppable>
+            >
+              <h2>{column.name}</h2>
+              <div style={{ margin: "8px" }}>
+                <Droppable droppableId={id} key={id}>
+                  {(provided, snapshot) => {
+                    return (
+                      <div
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        style={{
+                          background: "#E0BBE4",
+                          padding: 4,
+                          width: 250,
+                          minHeight: 500,
+                          borderRadius: "8px",
+                        }}
+                      >
+                        {column.items.map((item, index) => {
+                          return (
+                            <div style={{ marginTop: "8px" }}>
+                              <Draggable
+                                key={item.id}
+                                draggableId={item.id}
+                                index={index}
+                              >
+                                {(provided, snapshot) => {
+                                  return (
+                                    <div
+                                      ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                      style={{
+                                        borderRadius: "10px",
+                                        userSelect: "none",
+                                        padding: 16,
+                                        margin: "0 8px 8px 8px",
+                                        minHeight: "50px",
+                                        backgroundColor: snapshot.isDragging
+                                          ? "#957DAD"
+                                          : "#D291BC",
+                                        color: "white",
+                                        ...provided.draggableProps.style,
+                                      }}
+                                    >
+                                      {item.content}
+                                    </div>
+                                  );
+                                }}
+                              </Draggable>
+                            </div>
+                          );
+                        })}
+                        {provided.placeholder}
+                      </div>
+                    );
+                  }}
+                </Droppable>
+              </div>
+            </div>
           );
         })}
       </DragDropContext>
