@@ -18,6 +18,14 @@ const columnsData = {
     name: "Group 2",
     items: [],
   },
+  [uuidv4()]: {
+    name: "Group 3",
+    items: [],
+  },
+  [uuidv4()]: {
+    name: "Group 4",
+    items: [],
+  },
 };
 
 const onDragEnd = (result, columns, setColumns) => {
@@ -78,6 +86,7 @@ function App() {
                 flexDirection: "column",
                 alignItems: "center",
               }}
+              key={id}
             >
               <h2>{column.name}</h2>
               <div style={{ margin: "8px" }}>
@@ -97,7 +106,7 @@ function App() {
                       >
                         {column.items.map((item, index) => {
                           return (
-                            <div style={{ marginTop: "8px" }}>
+                            <div style={{ marginTop: "8px" }} key={item.id}>
                               <Draggable
                                 key={item.id}
                                 draggableId={item.id}
