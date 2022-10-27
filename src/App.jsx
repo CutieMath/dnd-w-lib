@@ -1,28 +1,27 @@
 import { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { v4 as uuidv4 } from "uuid";
 
 const itemsData = [
-  { id: uuidv4(), content: "item 1" },
-  { id: uuidv4(), content: "item 2" },
-  { id: uuidv4(), content: "item 3" },
-  { id: uuidv4(), content: "item 4" },
+  { id: "item_id_1", content: "item 1" },
+  { id: "item_id_2", content: "item 2" },
+  { id: "item_id_3", content: "item 3" },
+  { id: "item_id_4", content: "item 4" },
 ];
 
 const columnsData = {
-  [uuidv4()]: {
+  ["column_id_1"]: {
     name: "Group 1",
     items: itemsData,
   },
-  [uuidv4()]: {
+  ["column_id_2"]: {
     name: "Group 2",
     items: [],
   },
-  [uuidv4()]: {
+  ["column_id_3"]: {
     name: "Group 3",
     items: [],
   },
-  [uuidv4()]: {
+  ["column_id_4"]: {
     name: "Group 4",
     items: [],
   },
@@ -81,16 +80,16 @@ function App() {
         {Object.entries(columns).map(([id, column]) => {
           return (
             <div
+              key={id}
               style={{
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
               }}
-              key={id}
             >
               <h2>{column.name}</h2>
               <div style={{ margin: "8px" }}>
-                <Droppable droppableId={id} key={id}>
+                <Droppable droppableId={id}>
                   {(provided, snapshot) => {
                     return (
                       <div
@@ -104,9 +103,9 @@ function App() {
                           borderRadius: "8px",
                         }}
                       >
-                        {column.items.map((item, index) => {
-                          return (
-                            <div style={{ marginTop: "8px" }} key={item.id}>
+                        <div style={{ marginTop: "8px" }}>
+                          {column.items.map((item, index) => {
+                            return (
                               <Draggable
                                 key={item.id}
                                 draggableId={item.id}
@@ -136,10 +135,10 @@ function App() {
                                   );
                                 }}
                               </Draggable>
-                            </div>
-                          );
-                        })}
-                        {provided.placeholder}
+                            );
+                          })}
+                          {provided.placeholder}
+                        </div>
                       </div>
                     );
                   }}
